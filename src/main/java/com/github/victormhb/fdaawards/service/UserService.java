@@ -24,13 +24,23 @@ public class UserService {
     public List<UserDTO> findAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(user -> new UserDTO(user.getId(), user.getEmail(), user.getUsername(),  user.getRole().name()))
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getUsernameField(),
+                        user.getEmail(),
+                        user.getRole().name()
+                ))
                 .collect(Collectors.toList());
     }
 
     public UserDTO findUserById(Long id) {
         return userRepository.findById(id)
-                .map(user -> new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole().name()))
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getUsernameField(),
+                        user.getEmail(),
+                        user.getRole().name()
+                ))
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
@@ -44,7 +54,12 @@ public class UserService {
 
         User salvo = userRepository.save(novo);
 
-        return new UserDTO(salvo.getId(),  salvo.getEmail(), salvo.getUsername(), salvo.getRole().name());
+        return new UserDTO(
+                salvo.getId(),
+                salvo.getUsernameField(),
+                salvo.getEmail(),
+                salvo.getRole().name()
+        );
     }
 
     public void deleteUser(Long id) {

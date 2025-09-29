@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserDTO dto) {
-        return ResponseEntity.ok(userService.createUser(dto)); //Return 200
+        return ResponseEntity.ok(userService.createUser(dto)); //Retorna 200
     }
 
     @GetMapping
@@ -40,6 +40,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); //Retorna 204
     }
 }
