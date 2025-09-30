@@ -1,6 +1,6 @@
 package com.github.victormhb.fdaawards.repository;
 
-import com.github.victormhb.fdaawards.repository.entity.Vote;
+import com.github.victormhb.fdaawards.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

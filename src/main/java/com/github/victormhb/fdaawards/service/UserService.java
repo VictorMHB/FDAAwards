@@ -3,7 +3,7 @@ package com.github.victormhb.fdaawards.service;
 import com.github.victormhb.fdaawards.dto.user.CreateUserDTO;
 import com.github.victormhb.fdaawards.dto.user.UserDTO;
 import com.github.victormhb.fdaawards.repository.UserRepository;
-import com.github.victormhb.fdaawards.repository.entity.User;
+import com.github.victormhb.fdaawards.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

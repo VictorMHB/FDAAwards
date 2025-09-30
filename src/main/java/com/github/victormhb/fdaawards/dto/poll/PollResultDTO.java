@@ -23,7 +23,7 @@ public class PollResultDTO {
         private String title;
         private long voteCount;
 
-        public OptionResultDTO(String title, long voteCount) {
+        public OptionResultDTO(String title, Long voteCount) {
             this.title = title;
             this.voteCount = voteCount;
         }
@@ -32,7 +32,7 @@ public class PollResultDTO {
             return title;
         }
 
-        public long getVoteCount() {
+        public Long getVoteCount() {
             return voteCount;
         }
     }

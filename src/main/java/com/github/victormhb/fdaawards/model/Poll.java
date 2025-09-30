@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.repository.entity;
+package com.github.victormhb.fdaawards.model;
 
 import jakarta.persistence.*;
 
@@ -10,7 +10,7 @@ public class Poll {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String title;
@@ -28,11 +28,11 @@ public class Poll {
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,8 +1,8 @@
 package com.github.victormhb.fdaawards.controller;
 
 import com.github.victormhb.fdaawards.dto.poll.PollCreateRequest;
+import com.github.victormhb.fdaawards.dto.poll.PollDTO;
 import com.github.victormhb.fdaawards.dto.poll.PollResultDTO;
-import com.github.victormhb.fdaawards.repository.entity.Poll;
 import com.github.victormhb.fdaawards.service.PollService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +21,18 @@ public class PollController {
     }
 
     @PostMapping
-    public ResponseEntity<Poll> createPoll(@Valid @RequestBody PollCreateRequest request) {
-        return ResponseEntity.ok(pollService.createPoll(request)); //Retorna 200
+    public ResponseEntity<PollDTO> createPoll(@Valid @RequestBody PollCreateRequest request) {
+        return ResponseEntity.ok(pollService.createPollAndReturnDTO(request)); //Retorna 200
     }
 
     @GetMapping
-    public ResponseEntity<List<Poll>> getAllPolls() {
-        return ResponseEntity.ok(pollService.findAll()); //Retorna 200
+    public ResponseEntity<List<PollDTO>> getAllPolls() {
+        return ResponseEntity.ok(pollService.findAllDTO()); //Retorna 200
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Poll> getPollById(@PathVariable Long id) {
-        return ResponseEntity.ok(pollService.findById(id)); //Retorna 200
+    public ResponseEntity<PollDTO> getPollById(@PathVariable Long id) {
+        return ResponseEntity.ok(pollService.findByIdDTO(id)); //Retorna 200
     }
 
     @GetMapping("/{id}/results")

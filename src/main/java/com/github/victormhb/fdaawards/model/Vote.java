@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.repository.entity;
+package com.github.victormhb.fdaawards.model;
 
 import jakarta.persistence.*;
 

@@ -1,11 +1,12 @@
 package com.github.victormhb.fdaawards.service;
 
 import com.github.victormhb.fdaawards.dto.poll.PollCreateRequest;
+import com.github.victormhb.fdaawards.dto.poll.PollDTO;
 import com.github.victormhb.fdaawards.dto.poll.PollResultDTO;
 import com.github.victormhb.fdaawards.repository.PollRepository;
 import com.github.victormhb.fdaawards.repository.VoteRepository;
-import com.github.victormhb.fdaawards.repository.entity.Option;
-import com.github.victormhb.fdaawards.repository.entity.Poll;
+import com.github.victormhb.fdaawards.model.Option;
+import com.github.victormhb.fdaawards.model.Poll;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,34 @@ public class PollService {
                 .toList();
 
         return new PollResultDTO(poll.getTitle(), results);
+    }
+
+    public PollDTO toDTO(Poll poll) {
+        return new PollDTO(
+                poll.getId(),
+                poll.getTitle(),
+                poll.getDescription(),
+                poll.getOptions().stream()
+                        .map(option -> new PollDTO.OptionDTO(option.getId(), option.getTitle(), option.getDescription()))
+                        .toList()
+        );
+    }
+
+    @Transactional
+    public PollDTO createPollAndReturnDTO(PollCreateRequest request) {
+        Poll poll = createPoll(request);
+        return toDTO(poll);
+    }
+
+    public List<PollDTO> findAllDTO() {
+        return findAll().stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public PollDTO findByIdDTO(Long id) {
+        Poll poll = findById(id);
+        return toDTO(poll);
     }
 
 

@@ -22,23 +22,12 @@ public class PollCreateRequest {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<OptionCreateRequest> getOptions() {
         return options;
     }
 
-    public void setOptions(List<OptionCreateRequest> options) {
-        this.options = options;
-    }
 }
