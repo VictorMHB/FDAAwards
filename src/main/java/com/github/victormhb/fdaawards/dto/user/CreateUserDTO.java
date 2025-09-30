@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.dto;
+package com.github.victormhb.fdaawards.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

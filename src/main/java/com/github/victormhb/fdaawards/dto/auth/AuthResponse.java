@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.dto;
+package com.github.victormhb.fdaawards.dto.auth;
 
 public class AuthResponse {
     private String token;

@@ -1,8 +1,7 @@
 package com.github.victormhb.fdaawards.controller;
 
-import com.github.victormhb.fdaawards.dto.CreateUserDTO;
-import com.github.victormhb.fdaawards.dto.UserDTO;
-import com.github.victormhb.fdaawards.repository.entity.User;
+import com.github.victormhb.fdaawards.dto.user.CreateUserDTO;
+import com.github.victormhb.fdaawards.dto.user.UserDTO;
 import com.github.victormhb.fdaawards.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

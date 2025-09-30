@@ -1,8 +1,8 @@
 package com.github.victormhb.fdaawards.controller;
 
 import com.github.victormhb.fdaawards.config.JwtUtil;
-import com.github.victormhb.fdaawards.dto.AuthRequest;
-import com.github.victormhb.fdaawards.dto.AuthResponse;
+import com.github.victormhb.fdaawards.dto.auth.AuthRequest;
+import com.github.victormhb.fdaawards.dto.auth.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

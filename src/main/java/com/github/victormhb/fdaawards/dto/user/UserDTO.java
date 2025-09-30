@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.dto;
+package com.github.victormhb.fdaawards.dto.user;
 
 public class UserDTO {
     private Long id;
