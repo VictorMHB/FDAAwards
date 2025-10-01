@@ -3,6 +3,7 @@ package com.github.victormhb.fdaawards.controller;
 import com.github.victormhb.fdaawards.dto.poll.PollCreateRequest;
 import com.github.victormhb.fdaawards.dto.poll.PollDTO;
 import com.github.victormhb.fdaawards.dto.poll.PollResultDTO;
+import com.github.victormhb.fdaawards.model.Poll;
 import com.github.victormhb.fdaawards.service.PollService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,13 @@ public class PollController {
 
     @GetMapping("/{id}/results")
     public ResponseEntity<PollResultDTO> getPollResult(@PathVariable Long id) {
-        return ResponseEntity.ok(pollService.getResults(id));
+        return ResponseEntity.ok(pollService.getResults(id)); //Retorna 200
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        pollService.deletePoll(id);
+        return ResponseEntity.noContent().build(); //Retorna 204
     }
 
 }

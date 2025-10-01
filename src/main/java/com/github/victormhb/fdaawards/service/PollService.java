@@ -10,8 +10,8 @@ import com.github.victormhb.fdaawards.model.Poll;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PollService {
@@ -29,6 +29,16 @@ public class PollService {
         Poll poll = new Poll();
         poll.setTitle(request.getTitle());
         poll.setDescription(request.getDescription());
+        poll.setOpeningDate(request.getOpeningDate());
+        poll.setClosingDate(request.getClosingDate());
+
+        if (poll.getOpeningDate() != null && poll.getClosingDate() != null) {
+            if (poll.getOpeningDate().isAfter(poll.getClosingDate())) {
+                throw new RuntimeException("A data de abertura não pode ser anterior a data de fechamento");
+            }
+        }
+
+        poll.setStatus(Poll.Status.PENDING);
 
         poll.setOptions(request.getOptions().stream().map(optionDto -> {
             Option option = new Option();
@@ -36,7 +46,7 @@ public class PollService {
             option.setDescription(optionDto.getDescription());
             option.setPoll(poll);
             return option;
-        }).collect(Collectors.toList()));
+        }).toList());
 
         return pollRepository.save(poll);
     }
@@ -51,6 +61,29 @@ public class PollService {
     }
 
     @Transactional
+    public void deletePoll(Long id) {
+        Poll poll = findById(id); // já lança exceção se não existir
+        pollRepository.delete(poll);
+    }
+
+    @Transactional
+    public Poll updatePollStatus(Long id, Poll.Status status) {
+        Poll poll = findById(id);
+        poll.setStatus(status);
+        return poll;
+    }
+
+    public List<Poll> findPendingToOpen() {
+        LocalDateTime now = LocalDateTime.now();
+        return pollRepository.findByStatusAndOpeningDateBefore(Poll.Status.PENDING, now);
+    }
+
+    public List<Poll> findOpenToClose() {
+        LocalDateTime now = LocalDateTime.now();
+        return pollRepository.findByStatusAndClosingDateIsNotNullAndClosingDateBefore(Poll.Status.OPEN, now);
+    }
+
+    @Transactional
     public PollResultDTO getResults(Long pollId) {
         Poll poll = findById(pollId);
 
@@ -61,7 +94,13 @@ public class PollService {
                 })
                 .toList();
 
-        return new PollResultDTO(poll.getTitle(), results);
+        return new PollResultDTO(
+                poll.getTitle(),
+                poll.getStatus(),
+                poll.getOpeningDate(),
+                poll.getClosingDate(),
+                results
+        );
     }
 
     public PollDTO toDTO(Poll poll) {
@@ -69,6 +108,7 @@ public class PollService {
                 poll.getId(),
                 poll.getTitle(),
                 poll.getDescription(),
+                poll.getStatus(),
                 poll.getOptions().stream()
                         .map(option -> new PollDTO.OptionDTO(option.getId(), option.getTitle(), option.getDescription()))
                         .toList()

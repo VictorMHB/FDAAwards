@@ -1,12 +1,16 @@
 package com.github.victormhb.fdaawards.model;
 
 import jakarta.persistence.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "polls")
 public class Poll {
+
+    public enum Status {
+        PENDING, OPEN, CLOSED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,12 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options;
+
+    private LocalDateTime openingDate;
+    private LocalDateTime closingDate;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;
 
     public Poll() {}
 
@@ -58,5 +68,29 @@ public class Poll {
 
     public void setOptions(List<Option> options) {
         this.options = options;
+    }
+
+    public LocalDateTime getOpeningDate() {
+        return openingDate;
+    }
+
+    public void setOpeningDate(LocalDateTime openingDate) {
+        this.openingDate = openingDate;
+    }
+
+    public LocalDateTime getClosingDate() {
+        return closingDate;
+    }
+
+    public void setClosingDate(LocalDateTime closingDate) {
+        this.closingDate = closingDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

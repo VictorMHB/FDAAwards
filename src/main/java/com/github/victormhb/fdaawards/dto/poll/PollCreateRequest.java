@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PollCreateRequest {
@@ -18,6 +19,9 @@ public class PollCreateRequest {
     @Valid
     private List<OptionCreateRequest> options;
 
+    private LocalDateTime openingDate;
+    private LocalDateTime closingDate;
+
     public String getTitle() {
         return title;
     }
@@ -30,4 +34,11 @@ public class PollCreateRequest {
         return options;
     }
 
+    public LocalDateTime getOpeningDate() {
+        return openingDate;
+    }
+
+    public LocalDateTime getClosingDate() {
+        return closingDate;
+    }
 }

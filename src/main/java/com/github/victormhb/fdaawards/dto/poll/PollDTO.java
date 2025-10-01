@@ -1,5 +1,7 @@
 package com.github.victormhb.fdaawards.dto.poll;
 
+import com.github.victormhb.fdaawards.model.Poll;
+
 import java.util.List;
 
 public class PollDTO {
@@ -7,12 +9,14 @@ public class PollDTO {
     private Long id;
     private String title;
     private String description;
+    private Poll.Status status;
     private List<OptionDTO> options;
 
-    public PollDTO(Long id, String title, String description, List<OptionDTO> options) {
+    public PollDTO(Long id, String title, String description, Poll.Status status, List<OptionDTO> options) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.status = status;
         this.options = options;
     }
 
@@ -26,6 +30,10 @@ public class PollDTO {
 
     public String getDescription() {
         return description;
+    }
+
+    public Poll.Status getStatus() {
+        return status;
     }
 
     public List<OptionDTO> getOptions() {
