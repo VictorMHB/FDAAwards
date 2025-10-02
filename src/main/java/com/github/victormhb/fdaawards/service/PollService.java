@@ -3,6 +3,7 @@ package com.github.victormhb.fdaawards.service;
 import com.github.victormhb.fdaawards.dto.poll.PollCreateRequest;
 import com.github.victormhb.fdaawards.dto.poll.PollDTO;
 import com.github.victormhb.fdaawards.dto.poll.PollResultDTO;
+import com.github.victormhb.fdaawards.dto.poll.PollUpdateDTO;
 import com.github.victormhb.fdaawards.repository.PollRepository;
 import com.github.victormhb.fdaawards.repository.VoteRepository;
 import com.github.victormhb.fdaawards.model.Option;
@@ -34,7 +35,7 @@ public class PollService {
 
         if (poll.getOpeningDate() != null && poll.getClosingDate() != null) {
             if (poll.getOpeningDate().isAfter(poll.getClosingDate())) {
-                throw new RuntimeException("A data de abertura não pode ser anterior a data de fechamento");
+                throw new RuntimeException("A data de abertura não pode ser posterior a data de fechamento");
             }
         }
 
@@ -58,6 +59,39 @@ public class PollService {
     public Poll findById(Long id) {
         return pollRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Votação não encontrada"));
+    }
+
+    @Transactional
+    public Poll updatePoll(Long id, PollUpdateDTO dto) {
+        Poll poll = findById(id);
+
+        if (dto.getOpeningDate() != null) {
+            poll.setOpeningDate(dto.getOpeningDate());
+        }
+
+        if (dto.getClosingDate() != null) {
+            poll.setClosingDate(dto.getClosingDate());
+        }
+
+        if (poll.getOpeningDate() != null && poll.getClosingDate() != null) {
+            if (poll.getOpeningDate().isAfter(poll.getClosingDate())) {
+                throw new RuntimeException("A data de abertura não pode ser posterior a data de fechamento");
+            }
+        }
+
+        if (dto.getStatus() != null) {
+            if (dto.getStatus().equals(Poll.Status.CLOSED)) {
+                poll.setStatus(Poll.Status.CLOSED);
+                poll.setClosingDate(LocalDateTime.now());
+            } else if (dto.getStatus().equals(Poll.Status.OPEN)) {
+                poll.setStatus(Poll.Status.OPEN);
+                poll.setClosingDate(LocalDateTime.now());
+            } else {
+                poll.setStatus(dto.getStatus());
+            }
+        }
+
+        return pollRepository.save(poll);
     }
 
     @Transactional

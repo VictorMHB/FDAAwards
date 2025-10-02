@@ -3,6 +3,7 @@ package com.github.victormhb.fdaawards.controller;
 import com.github.victormhb.fdaawards.dto.poll.PollCreateRequest;
 import com.github.victormhb.fdaawards.dto.poll.PollDTO;
 import com.github.victormhb.fdaawards.dto.poll.PollResultDTO;
+import com.github.victormhb.fdaawards.dto.poll.PollUpdateDTO;
 import com.github.victormhb.fdaawards.model.Poll;
 import com.github.victormhb.fdaawards.service.PollService;
 import jakarta.validation.Valid;
@@ -34,6 +35,12 @@ public class PollController {
     @GetMapping("/{id}")
     public ResponseEntity<PollDTO> getPollById(@PathVariable Long id) {
         return ResponseEntity.ok(pollService.findByIdDTO(id)); //Retorna 200
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PollDTO> updatePoll(@PathVariable Long id, @Valid @RequestBody PollUpdateDTO dto) {
+        Poll updatePoll = pollService.updatePoll(id, dto);
+        return ResponseEntity.ok(pollService.findByIdDTO(updatePoll.getId())); //Retorna 200
     }
 
     @GetMapping("/{id}/results")
