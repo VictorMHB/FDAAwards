@@ -65,6 +65,18 @@ public class PollService {
     public Poll updatePoll(Long id, PollUpdateDTO dto) {
         Poll poll = findById(id);
 
+        if (poll.getStatus().equals(Poll.Status.CLOSED)) {
+            throw new RuntimeException("Não é possível editar enquetes que já foram fechadas.");
+        }
+
+        if (dto.getTitle() != null) {
+            poll.setTitle(dto.getTitle());
+        }
+
+        if (dto.getDescription() != null) {
+            poll.setDescription(dto.getDescription());
+        }
+
         if (dto.getOpeningDate() != null) {
             poll.setOpeningDate(dto.getOpeningDate());
         }

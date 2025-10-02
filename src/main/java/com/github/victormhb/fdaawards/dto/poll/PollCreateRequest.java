@@ -1,5 +1,6 @@
 package com.github.victormhb.fdaawards.dto.poll;
 
+import com.github.victormhb.fdaawards.dto.option.OptionCreateRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

@@ -1,4 +1,4 @@
-package com.github.victormhb.fdaawards.dto.poll;
+package com.github.victormhb.fdaawards.dto.option;
 
 import jakarta.validation.constraints.NotBlank;
 
