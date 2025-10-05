@@ -2,6 +2,8 @@ package com.github.victormhb.fdaawards.service;
 
 import com.github.victormhb.fdaawards.dto.option.OptionDTO;
 import com.github.victormhb.fdaawards.dto.option.OptionUpdateDTO;
+import com.github.victormhb.fdaawards.exception.BusinessRuleException;
+import com.github.victormhb.fdaawards.exception.ResourceNotFoundException;
 import com.github.victormhb.fdaawards.model.Option;
 import com.github.victormhb.fdaawards.model.Poll;
 import com.github.victormhb.fdaawards.repository.OptionRepository;
@@ -19,11 +21,11 @@ public class OptionService {
     @Transactional
     public OptionDTO updateOption(Long optionId, OptionUpdateDTO dto) {
         Option option = optionRepository.findById(optionId)
-                .orElseThrow(() -> new RuntimeException("Opção não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Opção com ID " + optionId + " não encontrada."));
 
         Poll poll = option.getPoll();
         if (poll.getStatus().equals(Poll.Status.CLOSED)) {
-            throw new RuntimeException("Não é possível editar opções de uma enquete fechada.");
+            throw new BusinessRuleException("Não é possível editar opções de uma enquete fechada.");
         }
 
         if (dto.getTitle() != null && !dto.getTitle().isEmpty()) {
