@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 public class CreateUserDTO {
 
     @NotBlank(message = "O usuário não pode ser vazio")
-    private String username;
+    private String nickname;
 
     @NotBlank(message = "O email não pode ser vazio")
     @Email(message = "O email deve ser válido")
@@ -20,12 +20,12 @@ public class CreateUserDTO {
     private String role;
 
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String username) {
+        this.nickname = username;
     }
 
     public String getEmail() {

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +24,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<UserDTO> findAllUsers() {
@@ -30,7 +34,7 @@ public class UserService {
                 .stream()
                 .map(user -> new UserDTO(
                         user.getId(),
-                        user.getUsernameField(),
+                        user.getNickname(),
                         user.getEmail(),
                         user.getRole().name()
                 ))
@@ -41,7 +45,7 @@ public class UserService {
         return userRepository.findById(id)
                 .map(user -> new UserDTO(
                         user.getId(),
-                        user.getUsernameField(),
+                        user.getNickname(),
                         user.getEmail(),
                         user.getRole().name()
                 ))
@@ -49,18 +53,28 @@ public class UserService {
     }
 
     public UserDTO createUser(CreateUserDTO dto) {
+        Optional<User> existingEmail = userRepository.findByEmail(dto.getEmail());
+        if (existingEmail.isPresent()) {
+            throw new BusinessRuleException("E-mail já cadastrado.");
+        }
+
         User novo = new User(
                 dto.getEmail(),
                 passwordEncoder.encode(dto.getPassword()),
                 User.Role.valueOf(dto.getRole().toUpperCase())
         );
-        novo.setUsername(dto.getUsername());
+        novo.setNickname(dto.getNickname());
+        novo.setVerified(false);
+        String verificationToken = UUID.randomUUID().toString();
+        novo.setVerificationToken(verificationToken);
 
         User salvo = userRepository.save(novo);
 
+        emailService.sendVerificationEmail(salvo, verificationToken);
+
         return new UserDTO(
                 salvo.getId(),
-                salvo.getUsernameField(),
+                salvo.getNickname(),
                 salvo.getEmail(),
                 salvo.getRole().name()
         );
@@ -88,13 +102,13 @@ public class UserService {
             targetUser.setEmail(dto.getEmail());
         }
 
-        if (dto.getUsername() != null && !dto.getUsername().isEmpty()) {
-            Optional<User> byUsername = userRepository.findByUsername(dto.getUsername());
-            if (byUsername.isPresent() && !byUsername.get().getId().equals(id)) {
+        if (dto.getNickname() != null && !dto.getNickname().isEmpty()) {
+            Optional<User> byNickname = userRepository.findByNickname(dto.getNickname());
+            if (byNickname.isPresent() && !byNickname.get().getId().equals(id)) {
                 throw new BusinessRuleException("Usuário já em uso por outro usuário.");
             }
 
-            targetUser.setUsername(dto.getUsername());
+            targetUser.setNickname(dto.getNickname());
         }
 
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
@@ -130,6 +144,15 @@ public class UserService {
         }
 
         userRepository.deleteById(id);
+    }
+
+    public void verifyUser(String token) {
+        User user = userRepository.findByVerificationToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("Token de verificaação inválido."));
+
+        user.setVerified(true);
+        user.setVerificationToken(null);
+        userRepository.save(user);
     }
 
 

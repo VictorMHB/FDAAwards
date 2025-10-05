@@ -2,13 +2,13 @@ package com.github.victormhb.fdaawards.dto.user;
 
 public class UserDTO {
     private Long id;
-    private String username;
+    private String nickname;
     private String email;
     private String role;
 
-    public UserDTO(Long id, String username, String email, String role) {
+    public UserDTO(Long id, String nickname, String email, String role) {
         this.id = id;
-        this.username = username;
+        this.nickname = nickname;
         this.email = email;
         this.role = role;
     }
@@ -17,8 +17,8 @@ public class UserDTO {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getEmail() {

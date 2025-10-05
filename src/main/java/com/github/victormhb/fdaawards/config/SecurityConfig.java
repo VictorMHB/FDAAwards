@@ -48,12 +48,26 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/users").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .requestMatchers("/auth/login", "/auth/verify", "/users").permitAll()
+                        .requestMatchers(
+                                "/users/me",
+                                "/polls",
+                                "/polls/*",
+                                "/polls/*/results",
+                                "/votes"
+                        ).authenticated()
+
+                        .requestMatchers(
+                                "/polls/**",
+                                "/options/**",
+                                "/users/**"
+                        ).hasRole("ADMIN")
+
+                        .anyRequest().denyAll()
+                );
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

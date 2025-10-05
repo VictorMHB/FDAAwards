@@ -20,13 +20,19 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String nickname;
 
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean verified = false;
+
+    @Column(name = "verification_token")
+    private String verificationToken;
 
     public enum Role {
         VOTER,
@@ -39,6 +45,8 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.verified = false;
+        this.verificationToken = null;
     }
 
     //USERDETAILS METHODS ---------------------------------------
@@ -75,6 +83,25 @@ public class User implements UserDetails {
     }
 
 
+    //VERIFICATION METHODS ---------------------------------------
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+
     //GETTERS E SETTERS -----------------------------------
 
     public Long getId() {
@@ -93,12 +120,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getUsernameField() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setPassword(String password) {

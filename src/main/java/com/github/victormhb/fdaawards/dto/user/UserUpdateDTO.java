@@ -2,7 +2,7 @@ package com.github.victormhb.fdaawards.dto.user;
 
 public class UserUpdateDTO {
     private String email;
-    private String username;
+    private String nickname;
     private String password;
     private String role;
 
@@ -16,12 +16,12 @@ public class UserUpdateDTO {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
